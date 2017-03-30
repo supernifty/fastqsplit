@@ -16,3 +16,5 @@ fastqsplit fastq_file(s)
 ## Building
 go build fastqsplit.go
 
+## Binaries
+Download binaries for Linux or OSX from the releases page.
