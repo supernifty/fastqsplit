@@ -14,6 +14,7 @@ fastqsplit fastq_file(s)
 * Does approximately 10M lines every 3 minutes (depending on CPU speed)
 
 ## Building
+go get github.com/klauspost/pgzip/
 go build fastqsplit.go
 
 ## Binaries

@@ -2,7 +2,8 @@ package main
 
 import (
 	"bufio"
-	"compress/gzip"
+	// "compress/gzip"
+	gzip "github.com/klauspost/pgzip"
 	"flag"
 	"fmt"
 	"log"
@@ -12,10 +13,10 @@ import (
 )
 
 const (
-	LOG = 10000000
+	LOG_LINE = 10000000
 )
 
-func check(e error) {
+func check_result(e error) {
 	if e != nil {
 		log.Fatal(e)
 	}
@@ -34,11 +35,11 @@ func main() {
 		var targets map[string] *gzip.Writer = make(map[string] *gzip.Writer)
 
 		file, err := os.Open(filename)
-		check(err)
+		check_result(err)
 		defer file.Close()
 
 		gr, err := gzip.NewReader(file)
-		check(err)
+		check_result(err)
 		defer gr.Close()
 
 		scanner := bufio.NewScanner(gr)
@@ -56,7 +57,7 @@ func main() {
 					filename_components := strings.Split(filename, "_")
 					target_filename := fmt.Sprintf("%s_%s_%s", strings.Join(filename_components[0:len(filename_components)-1], "_"), lane, filename_components[len(filename_components)-1])
 					target_file, err := os.Create(target_filename)
-					check(err)
+					check_result(err)
 					defer target_file.Close()
 
 					targets[lane] = gzip.NewWriter(target_file)
@@ -64,12 +65,12 @@ func main() {
 				}
 				for i := 0; i < 4; i++ {
 					_, err := targets[lane].Write([]byte(fmt.Sprintf("%s\n", record[i])))
-					check(err)
+					check_result(err)
 				}
 				written += 4
 			}
 			line++
-			if line % LOG == 0 {
+			if line % LOG_LINE == 0 {
 				fmt.Fprintf(os.Stderr, "%s: processed %d lines\n", time.Now().String(), line)
 			}
 		}
