@@ -11,11 +11,13 @@ fastqsplit fastq_file(s)
 ## Notes
 
 * fastq files must be gzipped
-* Does approximately 10M lines every 3 minutes (depending on CPU speed)
+* Does approximately 10M lines every 13s (depending on CPU speed)
 
 ## Building
+```
 go get github.com/klauspost/pgzip/
 go build fastqsplit.go
+```
 
 ## Binaries
 Download binaries for Linux or OSX from the releases page.
